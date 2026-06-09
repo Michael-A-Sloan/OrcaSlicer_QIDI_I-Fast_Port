@@ -1,3 +1,4 @@
+﻿# Trigger CI for QIDI I-Fast port builds.
 name: Build all
 
 on:
