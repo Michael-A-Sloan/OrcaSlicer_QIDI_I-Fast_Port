@@ -43,6 +43,12 @@ struct CompressedColPic : CompressedImageBuffer
     std::string_view tag() const override { return "thumbnail_QIDI"sv; }
 };
 
+struct CompressedM4010 : CompressedImageBuffer
+{
+    ~CompressedM4010() override { free(data); }
+    std::string_view tag() const override { return "thumbnail_M4010"sv; }
+};
+
 std::unique_ptr<CompressedImageBuffer> compress_thumbnail_png(const ThumbnailData &data)
 {
     auto out = std::make_unique<CompressedPNG>();
@@ -177,6 +183,104 @@ std::unique_ptr<CompressedImageBuffer> compress_thumbnail_colpic(const Thumbnail
     return out;
 }
 
+namespace {
+static void m4010_append_token(std::string &pixel_data, uint16_t value)
+{
+    char buf[8];
+    ::snprintf(buf, sizeof(buf), "%04x", value);
+    pixel_data += buf;
+}
+
+static void m4010_flush_chunk(std::string &output, std::string &pixel_data, int &index_pixel, int &pixel_num)
+{
+    if (pixel_data.empty())
+        return;
+    output += Slic3r::format("M4010 I%d T%d '%s'\n", index_pixel, pixel_num, pixel_data);
+    pixel_data.clear();
+    index_pixel += pixel_num;
+    pixel_num = 0;
+}
+} // namespace
+
+std::unique_ptr<CompressedImageBuffer> compress_thumbnail_m4010(const ThumbnailData &data)
+{
+    const unsigned int width  = data.width;
+    const unsigned int height = data.height;
+    constexpr unsigned int color_mask   = 32;
+    constexpr unsigned int color_unmask = ~color_mask;
+    constexpr unsigned int run_prefix   = 12288;
+    constexpr size_t       max_hex_per_line = 180;
+
+    std::string output;
+    output += Slic3r::format("M4010 X%u Y%u\n", width, height);
+
+    std::string pixel_data;
+    int index_pixel = 0;
+    int pixel_num   = 0;
+    int last_color  = -1;
+    int same_pixel  = 1;
+
+    auto emit_single = [&](int color) {
+        m4010_append_token(pixel_data, static_cast<uint16_t>(color & 0xFFFF));
+        ++pixel_num;
+    };
+
+    auto emit_run = [&](int last_c, int run) {
+        m4010_append_token(pixel_data, static_cast<uint16_t>((last_c | color_mask) & 0xFFFF));
+        m4010_append_token(pixel_data, static_cast<uint16_t>((run_prefix | run) & 0xFFFF));
+        pixel_num += run;
+    };
+
+    auto flush_if_needed = [&]() {
+        if (pixel_data.size() >= max_hex_per_line)
+            m4010_flush_chunk(output, pixel_data, index_pixel, pixel_num);
+    };
+
+    for (unsigned int row = 0; row < height; ++row) {
+        for (unsigned int col = 0; col < width; ++col) {
+            const size_t pix_idx = size_t(4) * (row * width + col);
+            int r = int(data.pixels[pix_idx]);
+            int g = int(data.pixels[pix_idx + 1]);
+            int b = int(data.pixels[pix_idx + 2]);
+            const int a = int(data.pixels[pix_idx + 3]);
+            if (a == 0) {
+                r = 46;
+                g = 51;
+                b = 72;
+            }
+            const int color = (((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3)) & color_unmask;
+
+            if (last_color == -1) {
+                last_color = color;
+            } else if (last_color == color && same_pixel < 4095) {
+                ++same_pixel;
+            } else {
+                if (same_pixel >= 2)
+                    emit_run(last_color, same_pixel);
+                else
+                    emit_single(last_color);
+                flush_if_needed();
+                last_color = color;
+                same_pixel = 1;
+            }
+        }
+    }
+
+    if (last_color != -1) {
+        if (same_pixel >= 2)
+            emit_run(last_color, same_pixel);
+        else
+            emit_single(last_color);
+    }
+    m4010_flush_chunk(output, pixel_data, index_pixel, pixel_num);
+
+    auto out  = std::make_unique<CompressedM4010>();
+    out->size = output.size();
+    out->data = malloc(out->size + 1);
+    ::memcpy(out->data, output.c_str(), out->size + 1);
+    return out;
+}
+
 std::unique_ptr<CompressedImageBuffer> compress_thumbnail_btt_tft(const ThumbnailData &data) {
 
     // Take vector of RGBA pixels and flip the image vertically
@@ -256,6 +360,8 @@ std::unique_ptr<CompressedImageBuffer> compress_thumbnail(const ThumbnailData &d
         return compress_thumbnail_btt_tft(data);
     case GCodeThumbnailsFormat::ColPic:
         return compress_thumbnail_colpic(data);
+    case GCodeThumbnailsFormat::M4010:
+        return compress_thumbnail_m4010(data);
     }
 }
 

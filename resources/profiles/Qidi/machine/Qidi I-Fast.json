@@ -1,0 +1,12 @@
+{
+	"type": "machine_model",
+	"name": "Qidi I-Fast",
+	"model_id": "Qidi-IFast",
+	"nozzle_diameter": "0.4",
+	"machine_tech": "FFF",
+	"family": "Qidi",
+	"bed_model": "qidi_xcfpro_buildplate_model.stl",
+	"bed_texture": "qidi_xcfpro_buildplate_texture.svg",
+	"hotend_model": "qidi_xseries_gen2_hotend.stl",
+	"default_materials": "Generic PLA @Qidi I-Fast;Generic ABS @Qidi I-Fast;Generic PETG @Qidi I-Fast;Generic PVA @Qidi I-Fast;Generic PA @Qidi I-Fast"
+}

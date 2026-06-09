@@ -546,7 +546,8 @@ static const t_config_enum_values  s_keys_map_GCodeThumbnailsFormat = {
     { "JPG", int(GCodeThumbnailsFormat::JPG) },
     { "QOI", int(GCodeThumbnailsFormat::QOI) },
     { "BTT_TFT", int(GCodeThumbnailsFormat::BTT_TFT) },
-    { "COLPIC", int(GCodeThumbnailsFormat::ColPic) }
+    { "COLPIC", int(GCodeThumbnailsFormat::ColPic) },
+    { "M4010", int(GCodeThumbnailsFormat::M4010) }
 };
 CONFIG_OPTION_ENUM_DEFINE_STATIC_MAPS(GCodeThumbnailsFormat)
 
@@ -7114,11 +7115,13 @@ void PrintConfigDef::init_fff_params()
     def->enum_values.push_back("QOI");
     def->enum_values.push_back("BTT_TFT");
     def->enum_values.push_back("COLPIC");
+    def->enum_values.push_back("M4010");
     def->enum_labels.push_back("PNG");
     def->enum_labels.push_back("JPG");
     def->enum_labels.push_back("QOI");
     def->enum_labels.push_back("BTT TT");
     def->enum_labels.push_back("ColPic");
+    def->enum_labels.push_back("M4010 (Qidi/ChiTu)");
     def->set_default_value(new ConfigOptionEnum<GCodeThumbnailsFormat>(GCodeThumbnailsFormat::PNG));
 
     def = this->add("use_relative_e_distances", coBool);

@@ -395,7 +395,7 @@ enum RetractLiftEnforceType {
 };
 
 enum class GCodeThumbnailsFormat {
-    PNG, JPG, QOI, BTT_TFT, ColPic
+    PNG, JPG, QOI, BTT_TFT, ColPic, M4010
 };
 
 enum CounterboreHoleBridgingOption {

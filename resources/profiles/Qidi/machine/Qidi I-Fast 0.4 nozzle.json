@@ -1,0 +1,149 @@
+{
+	"type": "machine",
+	"name": "Qidi I-Fast 0.4 nozzle",
+	"inherits": "fdm_qidi_common",
+	"from": "system",
+	"setting_id": "GMIF1",
+	"instantiation": "true",
+	"printer_model": "Qidi I-Fast",
+	"printer_variant": "0.4",
+	"default_print_profile": "0.20mm Medium @Qidi I-Fast",
+	"nozzle_diameter": [
+		"0.4",
+		"0.4"
+	],
+	"extruder_colour": [
+		"#FCE94F",
+		"#729FCF"
+	],
+	"extruder_offset": [
+		"0x0",
+		"0x0"
+	],
+	"printable_area": [
+		"0x0",
+		"330x0",
+		"330x250",
+		"0x250"
+	],
+	"printable_height": "320",
+	"nozzle_type": "hardened_steel",
+	"auxiliary_fan": "0",
+	"gcode_flavor": "marlin",
+	"activate_chamber_temp_control": [
+		"0",
+		"0"
+	],
+	"machine_max_acceleration_extruding": [
+		"1000",
+		"1000"
+	],
+	"machine_max_acceleration_retracting": [
+		"3000",
+		"3000"
+	],
+	"machine_max_acceleration_travel": [
+		"1000",
+		"1000"
+	],
+	"machine_max_acceleration_x": [
+		"1000",
+		"1000"
+	],
+	"machine_max_acceleration_y": [
+		"1000",
+		"1000"
+	],
+	"machine_max_acceleration_z": [
+		"150",
+		"150"
+	],
+	"machine_max_speed_e": [
+		"50",
+		"50"
+	],
+	"machine_max_speed_x": [
+		"100",
+		"100"
+	],
+	"machine_max_speed_y": [
+		"100",
+		"100"
+	],
+	"machine_max_speed_z": [
+		"16",
+		"16"
+	],
+	"machine_max_jerk_e": [
+		"5",
+		"5"
+	],
+	"machine_max_jerk_x": [
+		"10",
+		"10"
+	],
+	"machine_max_jerk_y": [
+		"10",
+		"10"
+	],
+	"machine_max_jerk_z": [
+		"0.4",
+		"0.4"
+	],
+	"max_layer_height": [
+		"0.32",
+		"0.32"
+	],
+	"min_layer_height": [
+		"0.08",
+		"0.08"
+	],
+	"printer_settings_id": "Qidi I-Fast",
+	"retraction_minimum_travel": [
+		"2",
+		"2"
+	],
+	"retraction_length": [
+		"1.5",
+		"1.5"
+	],
+	"retract_length_toolchange": [
+		"12",
+		"12"
+	],
+	"retract_restart_extra_toolchange": [
+		"-0.5",
+		"-0.5"
+	],
+	"retraction_speed": [
+		"30",
+		"30"
+	],
+	"deretraction_speed": [
+		"30",
+		"30"
+	],
+	"z_hop": [
+		"0",
+		"0"
+	],
+	"wipe": [
+		"0",
+		"0"
+	],
+	"single_extruder_multi_material": 0,
+	"change_filament_gcode": "",
+	"machine_pause_gcode": "M0",
+	"default_filament_profile": [
+		"Generic PLA @Qidi I-Fast"
+	],
+	"thumbnails": [
+		"300x300/M4010"
+	],
+	"thumbnails_format": "M4010",
+	"machine_start_gcode": "G28 ; home all axes\n{if is_extruder_used[0] && !is_extruder_used[1]}G1 X330 Y0 Z50 F3600 ; park right side for heating{endif}\n{if is_extruder_used[1] && !is_extruder_used[0]}G1 X0 Y0 Z50 F3600 ; park left side for heating{endif}\n{if is_extruder_used[0] && is_extruder_used[1]}G1 X0 Y0 Z50 F3600 ; park for dual extruder heating{endif}\nM141 S{overall_chamber_temperature} ; set heated chamber temperature\nM140 S{bed_temperature_initial_layer_single} ; set build platform temperature\nM190 S{bed_temperature_initial_layer_single} ; stabilize build platform temperature\n{if overall_chamber_temperature > 0}M191 S{overall_chamber_temperature} ; wait for chamber temperature{endif}\n{if is_extruder_used[0] && is_extruder_used[1]}M104 S{nozzle_temperature_initial_layer[1]} T1 ; set left extruder temperature\nM104 S{nozzle_temperature_initial_layer[0]} T0 ; set right extruder temperature\nM109 S{nozzle_temperature_initial_layer[1]} T1 ; stabilize left extruder temperature\nM109 S{nozzle_temperature_initial_layer[0]} T0 ; stabilize right extruder temperature{endif}\n{if is_extruder_used[0] && !is_extruder_used[1]}M104 S{nozzle_temperature_initial_layer[0]} T0 ; set right extruder temperature\nM109 S{nozzle_temperature_initial_layer[0]} T0 ; stabilize right extruder temperature{endif}\n{if !is_extruder_used[0] && is_extruder_used[1]}M104 S{nozzle_temperature_initial_layer[1]} T1 ; set left extruder temperature\nM109 S{nozzle_temperature_initial_layer[1]} T1 ; stabilize left extruder temperature{endif}",
+	"machine_end_gcode": "G1 Z320 F2400 ; move away from finished print\nG1 X360 Y250 F3600 ; move build platform to max XY\nG1 Z320 F900 ; lower build plate\nM104 S0 T0 ; turn off right extruder\nM104 S0 T1 ; turn off left extruder\nM140 S0 ; turn off heated build platform\nM141 S0 ; turn off heated chamber\nM107 ; turn off part cooling fan\nM84 ; disable motors",
+	"toolchange_gcode": "{if next_extruder == 0}G1 X330 F{travel_speed * 60}{endif}\n{if next_extruder == 1}G1 X0 F{travel_speed * 60}{endif}\nT{next_extruder}",
+	"scan_first_layer": "0",
+	"support_chamber_temp_control": true
+}

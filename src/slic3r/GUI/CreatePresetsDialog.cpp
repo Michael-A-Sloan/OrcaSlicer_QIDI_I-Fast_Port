@@ -130,7 +130,7 @@ static const std::unordered_map<std::string, std::vector<std::string>> printer_m
      {"Prusa",             {"Prusa CORE One", "Prusa CORE One HF", "Prusa CORE One L", "Prusa CORE One L HF", "MK4IS", "MK4S", "MK4S HF",
                             "Prusa XL", "Prusa XL 5T", "MK3.5", "MK3S", "MINI", "MINIIS"}},
      {"Qidi",              {"Qidi X-Plus 4",  "Qidi Q1 Pro",    "Qidi X-Max 3",   "Qidi X-Plus 3",  "Qidi X-Smart 3",
-                            "Qidi X-Plus",    "Qidi X-Max",     "Qidi X-CF Pro"}},
+                            "Qidi X-Plus",    "Qidi X-Max",     "Qidi X-CF Pro",  "Qidi I-Fast"}},
      {"Raise3D",           {"Raise3D Pro3",      "Raise3D Pro3 Plus"}},
      {"RatRig",            {"RatRig V-Core 3 200",                  "RatRig V-Core 3 300",                  "RatRig V-Core 3 400",                  "RatRig V-Core 3 500",                  "RatRig V-Minion",
                             "RatRig V-Cast",                        "RatRig V-Core 4 300",                  "RatRig V-Core 4 400",                  "RatRig V-Core 4 500",                  "RatRig V-Core 4 HYBRID 300",

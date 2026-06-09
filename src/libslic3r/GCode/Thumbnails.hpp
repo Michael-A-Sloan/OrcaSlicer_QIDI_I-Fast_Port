@@ -74,7 +74,10 @@ inline void export_thumbnails_to_file(ThumbnailsGeneratorCallback&              
                             output((boost::format("\n\n;simage:%s\n\n") % reinterpret_cast<char*>(compressed->data)).str().c_str());
                         }
                         first_ColPic = false;
-                    } 
+                    }
+                    else if (format == GCodeThumbnailsFormat::M4010) {
+                        output(reinterpret_cast<char *>(compressed->data));
+                    }
                     else {
                         output("; THUMBNAIL_BLOCK_START\n");
                         std::string encoded;

@@ -47,6 +47,10 @@
 		{
 			"name": "Qidi X-Smart 3",
 			"sub_path": "machine/Qidi X-Smart 3.json"
+		},
+		{
+			"name": "Qidi I-Fast",
+			"sub_path": "machine/Qidi I-Fast.json"
 		}
 	],
 	"process_list": [
@@ -885,6 +889,22 @@
 		{
 			"name": "0.56mm Standard @Qidi XSmart3 0.8 nozzle",
 			"sub_path": "process/0.56mm Standard @Qidi XSmart3 0.8 nozzle.json"
+		},
+		{
+			"name": "fdm_process_qidi_ifast_common",
+			"sub_path": "process/fdm_process_qidi_ifast_common.json"
+		},
+		{
+			"name": "0.30mm Fast @Qidi I-Fast",
+			"sub_path": "process/0.30mm Fast @Qidi I-Fast.json"
+		},
+		{
+			"name": "0.20mm Medium @Qidi I-Fast",
+			"sub_path": "process/0.20mm Medium @Qidi I-Fast.json"
+		},
+		{
+			"name": "0.10mm High @Qidi I-Fast",
+			"sub_path": "process/0.10mm High @Qidi I-Fast.json"
 		}
 	],
 	"filament_list": [
@@ -6035,6 +6055,26 @@
 		{
 			"name": "Qidi Generic PLA High Speed @Qidi X-Plus 4 0.8 nozzle",
 			"sub_path": "filament/Qidi Generic PLA High Speed @Qidi X-Plus 4 0.8 nozzle.json"
+		},
+		{
+			"name": "Generic PLA @Qidi I-Fast",
+			"sub_path": "filament/Generic PLA @Qidi I-Fast.json"
+		},
+		{
+			"name": "Generic ABS @Qidi I-Fast",
+			"sub_path": "filament/Generic ABS @Qidi I-Fast.json"
+		},
+		{
+			"name": "Generic PETG @Qidi I-Fast",
+			"sub_path": "filament/Generic PETG @Qidi I-Fast.json"
+		},
+		{
+			"name": "Generic PVA @Qidi I-Fast",
+			"sub_path": "filament/Generic PVA @Qidi I-Fast.json"
+		},
+		{
+			"name": "Generic PA @Qidi I-Fast",
+			"sub_path": "filament/Generic PA @Qidi I-Fast.json"
 		}
 	],
 	"machine_list": [
@@ -6197,6 +6237,10 @@
 		{
 			"name": "Qidi Q2C 0.8 nozzle",
 			"sub_path": "machine/Qidi Q2C 0.8 nozzle.json"
+		},
+		{
+			"name": "Qidi I-Fast 0.4 nozzle",
+			"sub_path": "machine/Qidi I-Fast 0.4 nozzle.json"
 		}
 	]
 }
